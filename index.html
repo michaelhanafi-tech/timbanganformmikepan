@@ -470,7 +470,29 @@ const openState = {};
 // In-memory history for this session. There is no reliable device-level
 // storage available in this environment, so data lives only in the
 // browser tab's memory while the page stays open.
-const localHistory = [];
+// History is persisted in localStorage so it survives closing the tab/app —
+// it stays until the user deletes it via Select or Clear Histories.
+const HISTORY_KEY = 'timbangan_history_v1';
+
+function loadHistoryFromStorage() {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.error('Failed to load history from storage:', e);
+    return [];
+  }
+}
+
+function saveHistoryToStorage() {
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(localHistory));
+  } catch (e) {
+    console.error('Failed to save history to storage:', e);
+  }
+}
+
+const localHistory = loadHistoryFromStorage();
 let selectMode = false;
 const selectedKeys = new Set();
 
@@ -718,6 +740,7 @@ document.getElementById('saveBtn').onclick = async () => {
   const key = 'timbangan-' + Date.now();
   const payload = { key, date: dateStr, customer: selectedCustomer, state: JSON.parse(JSON.stringify(state)), savedAt: new Date().toISOString() };
   localHistory.unshift(payload);
+  saveHistoryToStorage();
 
   // Clear the form for a new sale — the saved entry stays accessible under Riwayat
   CATEGORIES.forEach(c => state[c.code] = ['']);
@@ -764,6 +787,7 @@ async function deleteSelected() {
     const idx = localHistory.findIndex(h => h.key === key);
     if (idx !== -1) localHistory.splice(idx, 1);
   }
+  saveHistoryToStorage();
   selectedKeys.clear();
   selectMode = false;
   loadHistoryList();
@@ -774,6 +798,7 @@ document.getElementById('clearHistBtn').onclick = async () => {
   const ok = await customConfirm('Hapus SEMUA riwayat? Tindakan ini tidak bisa dibatalkan.');
   if (!ok) return;
   localHistory.length = 0;
+  saveHistoryToStorage();
   selectedKeys.clear();
   selectMode = false;
   loadHistoryList();
@@ -790,7 +815,7 @@ function loadHistoryList() {
   selectBtn.className = selectMode ? (selectedKeys.size > 0 ? 'danger' : 'active') : '';
 
   if (localHistory.length === 0) {
-    listEl.innerHTML = '<div class="empty-hist">Belum ada riwayat tersimpan di sesi ini.</div>';
+    listEl.innerHTML = '<div class="empty-hist">Belum ada riwayat tersimpan.</div>';
     return;
   }
 
