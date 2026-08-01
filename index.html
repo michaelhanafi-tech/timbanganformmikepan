@@ -9,127 +9,151 @@
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #0f1115;
-    color: #e8e8e8;
-    padding-bottom: 100px;
+    background: #f7f3ea;
+    color: #2b2620;
+    padding-bottom: 104px;
+    -webkit-font-smoothing: antialiased;
   }
   header {
-    padding: 20px 16px 14px;
-    background: #16181f;
-    border-bottom: 1px solid #262a35;
+    padding: 22px 18px 16px;
+    background: #fbf8f0;
+    border-bottom: 2px solid #2b2620;
     position: sticky;
     top: 0;
     z-index: 10;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
   }
   header h1 {
     margin: 0;
-    font-size: 19px;
-    letter-spacing: 0.3px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-size: 23px;
+    letter-spacing: 0.2px;
+    color: #2b2620;
+  }
+  header .eyebrow {
+    display: block;
+    font-family: -apple-system, sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #8a7f6b;
+    margin-top: 3px;
+    font-weight: 700;
   }
   .hist-btn {
-    background: #1c1f28;
-    border: 1px solid #2c3040;
-    color: #7dd3fc;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-size: 13px;
+    background: transparent;
+    border: 1px solid #2b2620;
+    color: #2b2620;
+    padding: 9px 16px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
   }
   .topbar {
-    padding: 12px 16px 0;
+    padding: 16px 18px 0;
   }
   .datebar {
     display: flex;
     gap: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
   }
   .datebar input {
     flex: 1;
-    background: #1c1f28;
-    border: 1px solid #2c3040;
-    color: #e8e8e8;
-    padding: 10px 12px;
-    border-radius: 10px;
+    background: #fff;
+    border: 1px solid #d8cfba;
+    color: #2b2620;
+    padding: 13px 14px;
     font-size: 14px;
+    font-family: Georgia, serif;
   }
+  .datebar input::placeholder { color: #a89b7f; font-style: italic; }
   .cust-label {
-    font-size: 12px;
-    color: #8b8f9c;
-    margin-bottom: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #8a7f6b;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
   .cust-row {
     display: flex;
     gap: 8px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .cust-btn {
     flex: 1;
     padding: 12px 8px;
-    border-radius: 10px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
-    border: 1px solid #2c3040;
-    background: #1c1f28;
-    color: #9ca3af;
+    letter-spacing: 0.6px;
+    border: 1px solid #d8cfba;
+    background: transparent;
+    color: #6b5f4a;
   }
-  .cust-btn.active-BESAR { background: #22c55e; color: #0f1115; border-color: #22c55e; }
-  .cust-btn.active-HIJAU { background: #4ade80; color: #0f1115; border-color: #4ade80; }
-  .cust-btn.active-MERAH { background: #f87171; color: #0f1115; border-color: #f87171; }
+  .cust-btn.active-BESAR { background: #2b2620; color: #f7f3ea; border-color: #2b2620; }
+  .cust-btn.active-HIJAU { background: #5b6b4f; color: #f7f3ea; border-color: #5b6b4f; }
+  .cust-btn.active-MERAH { background: #8b3a3a; color: #f7f3ea; border-color: #8b3a3a; }
   .container {
-    padding: 16px;
+    padding: 18px;
   }
   .cat {
-    background: #171a22;
-    border: 1px solid #262a35;
-    border-radius: 14px;
-    margin-bottom: 12px;
+    background: #fff;
+    border: 1px solid #e5ddc9;
+    margin-bottom: 10px;
     overflow: hidden;
   }
   .cat-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 16px;
+    padding: 13px 15px;
     cursor: pointer;
   }
   .cat-head .left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 11px;
   }
   .badge {
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    display: flex;
+    min-width: 36px;
+    height: 30px;
+    padding: 0 9px;
+    border-radius: 7px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 13px;
-    color: #0f1115;
+    font-size: 11px;
+    font-family: Georgia, serif;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
   }
-  .cat-total { font-size: 15px; font-weight: 700; color: #4ade80; }
+  .cat-total { font-size: 14px; font-weight: 700; color: #8b3a3a; font-family: Georgia, serif; }
   .cat-name {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 400;
+    color: #2b2620;
+    font-family: Georgia, serif;
   }
   .utuh-tag {
-    font-size: 10px;
+    font-size: 8.5px;
     font-weight: 700;
-    background: #1c2430;
-    color: #7dd3fc;
-    padding: 3px 7px;
-    border-radius: 6px;
-    letter-spacing: 0.4px;
+    background: #f2ede0;
+    color: #8a7f6b;
+    padding: 3px 6px;
+    letter-spacing: 0.8px;
+    border: 1px solid #d8cfba;
+    font-family: -apple-system, sans-serif;
   }
   .cat-body {
     display: none;
-    padding: 0 16px 16px;
+    padding: 0 15px 15px;
   }
   .cat-body.open { display: block; }
   .entry-row {
@@ -139,147 +163,177 @@
   }
   .entry-row input {
     flex: 1;
-    background: #0f1115;
-    border: 1px solid #2c3040;
-    color: #e8e8e8;
-    padding: 10px 12px;
-    border-radius: 10px;
+    background: #fbf8f0;
+    border: 1px solid #e5ddc9;
+    color: #2b2620;
+    padding: 11px 12px;
     font-size: 16px;
+    font-family: Georgia, serif;
   }
   .entry-row button {
-    background: #291b1e;
-    border: 1px solid #4a2830;
-    color: #f87171;
-    border-radius: 10px;
+    background: #fff;
+    border: 1px solid #d8cfba;
+    color: #8b3a3a;
     width: 42px;
-    font-size: 16px;
+    font-size: 15px;
   }
   .add-btn {
     width: 100%;
-    padding: 10px;
-    background: #1c2430;
-    border: 1px dashed #35415a;
-    color: #7dd3fc;
-    border-radius: 10px;
-    font-size: 14px;
+    padding: 11px;
+    background: transparent;
+    border: 1px dashed #c9b98f;
+    color: #6b5f4a;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
     margin-top: 4px;
   }
   .grand {
-    background: #171a22;
-    border: 1px solid #262a35;
-    border-radius: 14px;
-    padding: 16px;
-    margin-top: 8px;
+    background: #2b2620;
+    padding: 20px;
+    margin-top: 10px;
   }
   .grand h3 {
-    margin: 0 0 10px;
-    font-size: 14px;
-    color: #8b8f9c;
-    font-weight: 600;
+    margin: 0 0 12px;
+    font-size: 10px;
+    color: #a89b7f;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
   }
   .grand-row {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-    padding: 5px 0;
-    border-bottom: 1px solid #1f232d;
+    color: #d8cfba;
+    padding: 7px 0;
+    border-bottom: 1px solid #3d372c;
+    font-family: Georgia, serif;
   }
   .grand-row.total {
     border-bottom: none;
-    margin-top: 6px;
-    padding-top: 10px;
-    border-top: 1px solid #2c3040;
-    font-size: 17px;
-    font-weight: 700;
+    margin-top: 8px;
+    padding-top: 14px;
+    border-top: 1px solid #4a4436;
+    font-size: 19px;
+    font-weight: 400;
+    color: #f7f3ea;
   }
-  .grand-row.total span:last-child { color: #4ade80; }
+  .grand-row.total span:last-child { color: #d4af6a; }
   .footer-bar {
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    background: #16181f;
-    border-top: 1px solid #262a35;
-    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: #fbf8f0;
+    border-top: 2px solid #2b2620;
+    padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
     display: flex;
     gap: 10px;
   }
   .footer-bar button {
     flex: 1;
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 15px;
+    padding: 15px;
+    font-size: 13px;
     font-weight: 700;
-    border: none;
+    letter-spacing: 0.5px;
+    border: 1px solid #2b2620;
   }
-  .btn-save { background: #1c1f28; color: #7dd3fc; border: 1px solid #2c3040; flex: 0 0 90px; }
-  .btn-finish { background: #22c55e; color: #0f1115; }
-  .btn-reset { background: #1c1f28; color: #9ca3af; border: 1px solid #2c3040; flex: 0 0 74px; }
-  .chev { transition: transform 0.2s; color: #6b7280; }
+  .btn-save { background: transparent; color: #2b2620; flex: 0 0 92px; }
+  .btn-finish { background: #2b2620; color: #f7f3ea; }
+  .btn-reset { background: transparent; color: #8a7f6b; border-color: #d8cfba; flex: 0 0 76px; }
+  .chev { transition: transform 0.2s; color: #c9b98f; }
   .chev.open { transform: rotate(180deg); }
 
   .overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.6);
+    background: rgba(43,38,32,0.55);
     z-index: 50;
     align-items: flex-end;
   }
   .overlay.open { display: flex; }
   .sheet {
-    background: #16181f;
+    background: #f7f3ea;
     width: 100%;
     max-height: 85vh;
-    border-radius: 20px 20px 0 0;
-    padding: 16px;
+    border-top: 2px solid #2b2620;
+    padding: 20px;
     overflow-y: auto;
   }
   .sheet-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
-  .sheet-head h3 { margin: 0; font-size: 16px; }
+  .sheet-head h3 { margin: 0; font-size: 19px; font-weight: 400; color: #2b2620; font-family: Georgia, serif; }
   .close-btn {
-    background: #1c1f28;
-    border: 1px solid #2c3040;
-    color: #9ca3af;
+    background: transparent;
+    border: 1px solid #2b2620;
+    color: #2b2620;
     width: 32px; height: 32px;
-    border-radius: 8px;
-    font-size: 14px;
+    font-size: 13px;
   }
+  .hist-toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .hist-toolbar button {
+    flex: 1;
+    padding: 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    border: 1px solid #d8cfba;
+    background: #fff;
+    color: #6b5f4a;
+  }
+  .hist-toolbar button.danger { color: #8b3a3a; border-color: #d8b4a8; background: #fdf3f0; }
+  .hist-toolbar button.active { background: #2b2620; color: #f7f3ea; border-color: #2b2620; }
   .hist-item {
-    background: #1c1f28;
-    border: 1px solid #262a35;
-    border-radius: 12px;
-    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid #e5ddc9;
+    padding: 13px 14px;
     margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .hist-item .d { font-size: 14px; font-weight: 600; }
-  .hist-item .t { font-size: 12px; color: #8b8f9c; margin-top: 2px; }
-  .hist-item button {
-    background: #22c55e;
-    color: #0f1115;
+  .hist-item .d { font-size: 14px; font-weight: 700; color: #2b2620; font-family: Georgia, serif; }
+  .hist-item .t { font-size: 11.5px; color: #8a7f6b; margin-top: 2px; }
+  .hist-item button.open-btn {
+    background: #2b2620;
+    color: #f7f3ea;
     border: none;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 13px;
+    padding: 9px 14px;
+    font-size: 12px;
     font-weight: 700;
   }
-  .empty-hist { color: #6b7280; font-size: 13px; text-align: center; padding: 24px 0; }
+  .hist-checkbox {
+    width: 21px;
+    height: 21px;
+    border: 1.5px solid #c9b98f;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 900;
+  }
+  .hist-checkbox.checked { background: #2b2620; border-color: #2b2620; }
+  .empty-hist { color: #a89b7f; font-size: 13px; text-align: center; padding: 30px 0; font-family: Georgia, serif; font-style: italic; }
   .toast {
     position: fixed;
-    bottom: 90px;
+    bottom: 92px;
     left: 50%;
     transform: translateX(-50%);
-    background: #22c55e;
-    color: #0f1115;
-    padding: 10px 18px;
-    border-radius: 10px;
-    font-size: 13px;
+    background: #2b2620;
+    color: #f7f3ea;
+    padding: 11px 20px;
+    font-size: 12.5px;
     font-weight: 700;
     opacity: 0;
     transition: opacity 0.25s;
@@ -289,17 +343,16 @@
   .toast.show { opacity: 1; }
 
   .summary-box {
-    background: #0f1115;
-    border: 1px solid #262a35;
-    border-radius: 12px;
-    padding: 14px;
+    background: #fff;
+    border: 1px solid #e5ddc9;
+    padding: 16px;
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 13.5px;
+    font-size: 13px;
     line-height: 1.7;
     white-space: pre-wrap;
     word-break: break-word;
-    color: #e8e8e8;
-    margin-bottom: 14px;
+    color: #2b2620;
+    margin-bottom: 16px;
   }
   .sheet-actions {
     display: flex;
@@ -307,20 +360,23 @@
   }
   .sheet-actions button {
     flex: 1;
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 15px;
+    padding: 15px;
+    font-size: 13px;
     font-weight: 700;
-    border: none;
+    letter-spacing: 0.5px;
+    border: 1px solid #2b2620;
   }
-  .btn-copy { background: #22c55e; color: #0f1115; }
-  .btn-close2 { background: #1c1f28; color: #9ca3af; border: 1px solid #2c3040; }
+  .btn-copy { background: #2b2620; color: #f7f3ea; }
+  .btn-close2 { background: transparent; color: #2b2620; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🥩 Form Timbangan</h1>
+  <div>
+    <h1>Form Timbangan</h1>
+    <span class="eyebrow">Daily Weighing Record</span>
+  </div>
   <button class="hist-btn" id="histBtn">Riwayat</button>
 </header>
 
@@ -337,7 +393,7 @@
 <div class="footer-bar">
   <button class="btn-reset" id="resetBtn">Reset</button>
   <button class="btn-save" id="saveBtn">Simpan</button>
-  <button class="btn-finish" id="finishBtn">FINISH</button>
+  <button class="btn-finish" id="finishBtn">Finish</button>
 </div>
 
 <div class="overlay" id="histOverlay">
@@ -345,6 +401,10 @@
     <div class="sheet-head">
       <h3>Riwayat Tersimpan</h3>
       <button class="close-btn" id="closeHist">✕</button>
+    </div>
+    <div class="hist-toolbar">
+      <button id="selectModeBtn">Select</button>
+      <button class="danger" id="clearHistBtn">Clear Histories</button>
     </div>
     <div id="histList"><div class="empty-hist">Memuat...</div></div>
   </div>
@@ -359,14 +419,14 @@
     <div class="summary-box" id="summaryBox"></div>
     <div class="sheet-actions">
       <button class="btn-close2" id="closeFinish2">Tutup</button>
-      <button class="btn-copy" id="copyBtn">COPY</button>
+      <button class="btn-copy" id="copyBtn">Copy</button>
     </div>
   </div>
 </div>
 
 <div class="overlay" id="modalOverlay">
   <div class="sheet" style="max-height:none;">
-    <div id="modalMsg" style="font-size:15px;line-height:1.5;margin-bottom:18px;"></div>
+    <div id="modalMsg" style="font-size:15px;line-height:1.5;margin-bottom:18px;color:#2b2620;font-family:Georgia,serif;"></div>
     <div class="sheet-actions" id="modalActions"></div>
   </div>
 </div>
@@ -375,23 +435,22 @@
 
 <script>
 const CATEGORIES = [
-  { code: 'R',        color: '#f87171', unit: 'kg' },
-  { code: 'R (UTUH)', color: '#fca5a5', unit: 'kg' },
-  { code: 'O',        color: '#fb923c', unit: 'kg' },
-  { code: 'O (UTUH)', color: '#fdba74', unit: 'kg' },
-  { code: 'B',        color: '#facc15', unit: 'kg' },
-  { code: 'K',        color: '#a3e635', unit: 'kg' },
-  { code: 'US',       color: '#4ade80', unit: 'kg' },
-  { code: 'US (UTUH)', color: '#86efac', unit: 'kg' },
-  { code: 'SIR',      color: '#2dd4bf', unit: 'kg' },
-  { code: 'SIR (UTUH)', color: '#5eead4', unit: 'kg' },
-  { code: 'L',        color: '#60a5fa', unit: 'kg' },
-  { code: 'Tongue',   color: '#818cf8', unit: 'kg' },
-  { code: 'GFPrime',  color: '#c084fc', unit: 'kg' },
-  { code: 'GFPrem',   color: '#e879f9', unit: 'kg' },
-  { code: 'Bone Marrow', color: '#fbbf24', unit: 'kg' },
-  { code: 'Bone',     color: '#fca5a5', unit: 'g' },
-  { code: 'LOAF (UTUH)', color: '#38bdf8', unit: 'kg' },
+  { code: 'R',        short: 'R',   color: '#8b3a3a', unit: 'kg' },
+  { code: 'R (UTUH)', short: 'R',   color: '#8b3a3a', unit: 'kg' },
+  { code: 'O',        short: 'O',   color: '#a3654f', unit: 'kg' },
+  { code: 'O (UTUH)', short: 'O',   color: '#a3654f', unit: 'kg' },
+  { code: 'B',        short: 'B',   color: '#b08c4f', unit: 'kg' },
+  { code: 'K',        short: 'K',   color: '#8a7f4f', unit: 'kg' },
+  { code: 'US',       short: 'US',  color: '#5b6b4f', unit: 'kg' },
+  { code: 'US (UTUH)', short: 'US', color: '#5b6b4f', unit: 'kg' },
+  { code: 'SIR',      short: 'SIR', color: '#5b8a7a', unit: 'kg' },
+  { code: 'SIR (UTUH)', short: 'SIR', color: '#5b8a7a', unit: 'kg' },
+  { code: 'L',        short: 'L',   color: '#5b6b7a', unit: 'kg' },
+  { code: 'Tongue',   short: 'TG',  color: '#5b6b7a', unit: 'kg' },
+  { code: 'GFPrime',  short: 'GFP', color: '#7a5b6b', unit: 'kg' },
+  { code: 'GFPrem',   short: 'GFM', color: '#7a5b6b', unit: 'kg' },
+  { code: 'Bone Marrow', short: 'BM', color: '#b08c4f', unit: 'kg' },
+  { code: 'Bone',     short: 'BN',  color: '#8b3a3a', unit: 'g' },
 ];
 
 const CUSTOMERS = ['BESAR', 'HIJAU', 'MERAH'];
@@ -405,6 +464,8 @@ const openState = {};
 // storage available in this environment, so data lives only in the
 // browser tab's memory while the page stays open.
 const localHistory = [];
+let selectMode = false;
+const selectedKeys = new Set();
 
 const container = document.getElementById('catContainer');
 const toastEl = document.getElementById('toast');
@@ -429,6 +490,13 @@ function baseCode(code) {
 
 function isUtuh(code) {
   return /\(UTUH\)$/i.test(code);
+}
+
+function tint(hex, alpha) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
 }
 
 // ---- Customer selector ----
@@ -461,7 +529,7 @@ function render() {
     head.className = 'cat-head';
     head.innerHTML = `
       <div class="left">
-        <div class="badge" style="background:${cat.color}">${baseCode(cat.code)}</div>
+        <div class="badge" style="background:${tint(cat.color, 0.14)};color:${cat.color};border:1px solid ${tint(cat.color, 0.4)};">${cat.short}</div>
         <div class="cat-name">${baseCode(cat.code)}${isUtuh(cat.code) ? '<span class="utuh-tag">UTUH</span>' : ''}</div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
@@ -539,7 +607,7 @@ function renderGrandTotal() {
   const grand = document.createElement('div');
   grand.className = 'grand';
   grand.id = 'grandBox';
-  grand.innerHTML = `<h3>TOTAL KESELURUHAN</h3>`;
+  grand.innerHTML = `<h3>Total Keseluruhan</h3>`;
 
   let totalKg = 0;
   CATEGORIES.forEach(cat => {
@@ -656,6 +724,8 @@ document.getElementById('saveBtn').onclick = async () => {
 
 document.getElementById('histBtn').onclick = () => {
   document.getElementById('histOverlay').classList.add('open');
+  selectMode = false;
+  selectedKeys.clear();
   loadHistoryList();
 };
 document.getElementById('closeHist').onclick = () => {
@@ -665,8 +735,52 @@ document.getElementById('histOverlay').onclick = (e) => {
   if (e.target.id === 'histOverlay') e.currentTarget.classList.remove('open');
 };
 
+document.getElementById('selectModeBtn').onclick = () => {
+  if (selectMode) {
+    if (selectedKeys.size > 0) {
+      deleteSelected();
+    } else {
+      selectMode = false;
+      loadHistoryList();
+    }
+  } else {
+    selectMode = true;
+    selectedKeys.clear();
+    loadHistoryList();
+  }
+};
+
+async function deleteSelected() {
+  const ok = await customConfirm(`Hapus ${selectedKeys.size} riwayat terpilih?`);
+  if (!ok) return;
+  for (const key of selectedKeys) {
+    const idx = localHistory.findIndex(h => h.key === key);
+    if (idx !== -1) localHistory.splice(idx, 1);
+  }
+  selectedKeys.clear();
+  selectMode = false;
+  loadHistoryList();
+}
+
+document.getElementById('clearHistBtn').onclick = async () => {
+  if (localHistory.length === 0) { await customAlert('Riwayat sudah kosong.'); return; }
+  const ok = await customConfirm('Hapus SEMUA riwayat? Tindakan ini tidak bisa dibatalkan.');
+  if (!ok) return;
+  localHistory.length = 0;
+  selectedKeys.clear();
+  selectMode = false;
+  loadHistoryList();
+  showToast('Semua riwayat dihapus ✓');
+};
+
 function loadHistoryList() {
   const listEl = document.getElementById('histList');
+  const selectBtn = document.getElementById('selectModeBtn');
+
+  selectBtn.textContent = selectMode
+    ? (selectedKeys.size > 0 ? `Hapus (${selectedKeys.size})` : 'Batal')
+    : 'Select';
+  selectBtn.className = selectMode ? (selectedKeys.size > 0 ? 'danger' : 'active') : '';
 
   if (localHistory.length === 0) {
     listEl.innerHTML = '<div class="empty-hist">Belum ada riwayat tersimpan di sesi ini.</div>';
@@ -677,33 +791,44 @@ function loadHistoryList() {
 
   listEl.innerHTML = '';
   items.forEach(item => {
-      let totalKg = 0;
-      CATEGORIES.forEach(cat => {
-        if (cat.unit !== 'kg') return;
-        const vals = (item.state[cat.code] || []).map(parseNum).filter(v => !isNaN(v));
-        totalKg += vals.reduce((a,b) => a+b, 0);
-      });
-      const div = document.createElement('div');
-      div.className = 'hist-item';
-      const custLabel = item.customer ? (' · ' + item.customer) : '';
-      let timeLabel = '';
-      if (item.savedAt) {
-        try {
-          const d = new Date(item.savedAt);
-          timeLabel = ' · disimpan ' + d.toLocaleDateString('id-ID') + ' ' + d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-        } catch (e) {}
-      }
-      div.innerHTML = `
-        <div>
+    let totalKg = 0;
+    CATEGORIES.forEach(cat => {
+      if (cat.unit !== 'kg') return;
+      const vals = (item.state[cat.code] || []).map(parseNum).filter(v => !isNaN(v));
+      totalKg += vals.reduce((a,b) => a+b, 0);
+    });
+    const div = document.createElement('div');
+    div.className = 'hist-item';
+    const custLabel = item.customer ? (' · ' + item.customer) : '';
+    let timeLabel = '';
+    if (item.savedAt) {
+      try {
+        const d = new Date(item.savedAt);
+        timeLabel = ' · disimpan ' + d.toLocaleDateString('id-ID') + ' ' + d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      } catch (e) {}
+    }
+
+    const isChecked = selectedKeys.has(item.key);
+
+    div.innerHTML = `
+      <div style="display:flex;align-items:center;flex:1;min-width:0;">
+        ${selectMode ? `<div class="hist-checkbox ${isChecked ? 'checked' : ''}">${isChecked ? '✓' : ''}</div>` : ''}
+        <div style="min-width:0;">
           <div class="d">${item.date}${custLabel}</div>
           <div class="t">${totalKg.toFixed(2)} kg total${timeLabel}</div>
         </div>
-        <div style="display:flex;gap:6px;">
-          <button data-act="open">Buka</button>
-          <button data-act="del" style="background:#291b1e;color:#f87171;">✕</button>
-        </div>
-      `;
-      div.querySelector('[data-act="open"]').onclick = () => {
+      </div>
+      ${selectMode ? '' : '<button class="open-btn">Buka</button>'}
+    `;
+
+    if (selectMode) {
+      div.onclick = () => {
+        if (selectedKeys.has(item.key)) selectedKeys.delete(item.key);
+        else selectedKeys.add(item.key);
+        loadHistoryList();
+      };
+    } else {
+      div.querySelector('.open-btn').onclick = () => {
         CATEGORIES.forEach(cat => {
           state[cat.code] = (item.state[cat.code] && item.state[cat.code].length) ? item.state[cat.code] : [''];
         });
@@ -714,14 +839,9 @@ function loadHistoryList() {
         renderCustomers();
         showToast('Dimuat ✓');
       };
-      div.querySelector('[data-act="del"]').onclick = async () => {
-        const ok = await customConfirm('Hapus riwayat ini?');
-        if (!ok) return;
-        const idx = localHistory.findIndex(h => h.key === item.key);
-        if (idx !== -1) localHistory.splice(idx, 1);
-        loadHistoryList();
-      };
-      listEl.appendChild(div);
+    }
+
+    listEl.appendChild(div);
   });
 }
 
