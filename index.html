@@ -440,6 +440,21 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBvRjBGmOXBk5RwkeNGHKdq1MTWmpmnCJI",
+  authDomain: "sugoi-timbangan.firebaseapp.com",
+  projectId: "sugoi-timbangan",
+  storageBucket: "sugoi-timbangan.firebasestorage.app",
+  messagingSenderId: "1083790218685",
+  appId: "1:1083790218685:web:79ddc23ede4aa3e820aed4"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const HISTORY_COLLECTION = 'timbangan_history';
+</script>
 <script>
 const CATEGORIES = [
   { code: 'R',        short: 'R',   color: '#8b3a3a', unit: 'kg' },
@@ -467,32 +482,21 @@ CATEGORIES.forEach(c => state[c.code] = ['']);
 let selectedCustomer = null;
 const openState = {};
 
-// In-memory history for this session. There is no reliable device-level
-// storage available in this environment, so data lives only in the
-// browser tab's memory while the page stays open.
-// History is persisted in localStorage so it survives closing the tab/app —
-// it stays until the user deletes it via Select or Clear Histories.
-const HISTORY_KEY = 'timbangan_history_v1';
-
-function loadHistoryFromStorage() {
+// History is stored in a shared Firestore database — every device (Mike's
+// phone and every staff member's phone) reads and writes the same data,
+// so everyone sees the same Riwayat. It stays until deleted via Select or
+// Clear Histories.
+async function fetchHistoryFromCloud() {
   try {
-    const raw = localStorage.getItem(HISTORY_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const snap = await db.collection(HISTORY_COLLECTION).orderBy('savedAt', 'desc').get();
+    return snap.docs.map(doc => doc.data());
   } catch (e) {
-    console.error('Failed to load history from storage:', e);
-    return [];
+    console.error('Failed to load history from Firestore:', e);
+    return null; // null signals a fetch error, distinct from an empty list
   }
 }
 
-function saveHistoryToStorage() {
-  try {
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(localHistory));
-  } catch (e) {
-    console.error('Failed to save history to storage:', e);
-  }
-}
-
-const localHistory = loadHistoryFromStorage();
+let localHistory = [];
 let selectMode = false;
 const selectedKeys = new Set();
 
@@ -739,8 +743,18 @@ document.getElementById('saveBtn').onclick = async () => {
 
   const key = 'timbangan-' + Date.now();
   const payload = { key, date: dateStr, customer: selectedCustomer, state: JSON.parse(JSON.stringify(state)), savedAt: new Date().toISOString() };
-  localHistory.unshift(payload);
-  saveHistoryToStorage();
+
+  const saveBtnEl = document.getElementById('saveBtn');
+  saveBtnEl.disabled = true;
+  try {
+    await db.collection(HISTORY_COLLECTION).doc(key).set(payload);
+  } catch (e) {
+    console.error('Failed to save to Firestore:', e);
+    saveBtnEl.disabled = false;
+    await customAlert('Gagal menyimpan ke server. Cek koneksi internet, lalu coba lagi.');
+    return;
+  }
+  saveBtnEl.disabled = false;
 
   // Clear the form for a new sale — the saved entry stays accessible under Riwayat
   CATEGORIES.forEach(c => state[c.code] = ['']);
@@ -783,11 +797,13 @@ document.getElementById('selectModeBtn').onclick = () => {
 async function deleteSelected() {
   const ok = await customConfirm(`Hapus ${selectedKeys.size} riwayat terpilih?`);
   if (!ok) return;
-  for (const key of selectedKeys) {
-    const idx = localHistory.findIndex(h => h.key === key);
-    if (idx !== -1) localHistory.splice(idx, 1);
+  try {
+    await Promise.all([...selectedKeys].map(key => db.collection(HISTORY_COLLECTION).doc(key).delete()));
+  } catch (e) {
+    console.error('Failed to delete from Firestore:', e);
+    await customAlert('Gagal menghapus. Cek koneksi internet, lalu coba lagi.');
+    return;
   }
-  saveHistoryToStorage();
   selectedKeys.clear();
   selectMode = false;
   loadHistoryList();
@@ -797,17 +813,34 @@ document.getElementById('clearHistBtn').onclick = async () => {
   if (localHistory.length === 0) { await customAlert('Riwayat sudah kosong.'); return; }
   const ok = await customConfirm('Hapus SEMUA riwayat? Tindakan ini tidak bisa dibatalkan.');
   if (!ok) return;
-  localHistory.length = 0;
-  saveHistoryToStorage();
+  try {
+    const snap = await db.collection(HISTORY_COLLECTION).get();
+    const batch = db.batch();
+    snap.docs.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+  } catch (e) {
+    console.error('Failed to clear history in Firestore:', e);
+    await customAlert('Gagal menghapus semua riwayat. Cek koneksi internet, lalu coba lagi.');
+    return;
+  }
   selectedKeys.clear();
   selectMode = false;
   loadHistoryList();
   showToast('Semua riwayat dihapus ✓');
 };
 
-function loadHistoryList() {
+async function loadHistoryList() {
   const listEl = document.getElementById('histList');
   const selectBtn = document.getElementById('selectModeBtn');
+
+  listEl.innerHTML = '<div class="empty-hist">Memuat...</div>';
+
+  const fetched = await fetchHistoryFromCloud();
+  if (fetched === null) {
+    listEl.innerHTML = '<div class="empty-hist">Gagal memuat riwayat. Cek koneksi internet lalu buka lagi Riwayat.</div>';
+    return;
+  }
+  localHistory = fetched;
 
   selectBtn.textContent = selectMode
     ? (selectedKeys.size > 0 ? `Hapus (${selectedKeys.size})` : 'Batal')
