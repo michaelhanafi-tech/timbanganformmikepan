@@ -103,6 +103,7 @@
   .cust-btn.active-BESAR { background: #2b2620; color: #f7f3ea; border-color: #2b2620; }
   .cust-btn.active-HIJAU { background: #5b6b4f; color: #f7f3ea; border-color: #5b6b4f; }
   .cust-btn.active-MERAH { background: #8b3a3a; color: #f7f3ea; border-color: #8b3a3a; }
+  .cust-btn.active-TABUNGAN { background: #a3823a; color: #f7f3ea; border-color: #a3823a; }
   .container {
     padding: 18px;
   }
@@ -499,6 +500,10 @@
       <button class="close-btn" id="closeHist">✕</button>
     </div>
     <div class="hist-toolbar">
+      <button id="tabOngoing">On Hold</button>
+      <button id="tabFinished">Selesai</button>
+    </div>
+    <div class="hist-toolbar">
       <button id="selectModeBtn">Select</button>
       <button class="danger" id="clearHistBtn">Clear Histories</button>
     </div>
@@ -564,9 +569,10 @@ const CATEGORIES = [
   { code: 'GFPrem',   short: 'GFM', color: '#7a5b6b', unit: 'kg' },
   { code: 'Bone Marrow', short: 'BM', color: '#b08c4f', unit: 'kg' },
   { code: 'Bone',     short: 'BN',  color: '#8b3a3a', unit: 'g' },
+  { code: 'Brisket',  short: 'BR',  color: '#8a6b4f', unit: 'kg' },
 ];
 
-const CUSTOMERS = ['BESAR', 'HIJAU', 'MERAH'];
+const CUSTOMERS = ['BESAR', 'HIJAU', 'MERAH', 'TABUNGAN'];
 
 const state = {};
 CATEGORIES.forEach(c => state[c.code] = ['']);
@@ -833,7 +839,7 @@ document.getElementById('saveBtn').onclick = async () => {
   if (!hasData) { await customAlert('Belum ada berat yang diisi.'); return; }
 
   const key = 'timbangan-' + Date.now();
-  const payload = { key, date: dateStr, customer: selectedCustomer, state: JSON.parse(JSON.stringify(state)), savedAt: new Date().toISOString() };
+  const payload = { key, date: dateStr, customer: selectedCustomer, state: JSON.parse(JSON.stringify(state)), savedAt: new Date().toISOString(), status: 'ongoing' };
 
   const saveBtnEl = document.getElementById('saveBtn');
   saveBtnEl.disabled = true;
@@ -870,6 +876,17 @@ document.getElementById('histOverlay').onclick = (e) => {
   if (e.target.id === 'histOverlay') e.currentTarget.classList.remove('open');
 };
 
+let historyTab = 'ongoing';
+
+function switchHistoryTab(tab) {
+  historyTab = tab;
+  selectMode = false;
+  selectedKeys.clear();
+  loadHistoryList();
+}
+document.getElementById('tabOngoing').onclick = () => switchHistoryTab('ongoing');
+document.getElementById('tabFinished').onclick = () => switchHistoryTab('finished');
+
 document.getElementById('selectModeBtn').onclick = () => {
   if (selectMode) {
     if (selectedKeys.size > 0) {
@@ -901,28 +918,34 @@ async function deleteSelected() {
 }
 
 document.getElementById('clearHistBtn').onclick = async () => {
-  if (localHistory.length === 0) { await customAlert('Riwayat sudah kosong.'); return; }
-  const ok = await customConfirm('Hapus SEMUA riwayat? Tindakan ini tidak bisa dibatalkan.');
+  const currentTabItems = localHistory.filter(item => (item.status || 'ongoing') === historyTab);
+  if (currentTabItems.length === 0) { await customAlert('Riwayat di tab ini sudah kosong.'); return; }
+  const tabLabel = historyTab === 'ongoing' ? 'On Hold' : 'Selesai';
+  const ok = await customConfirm(`Hapus SEMUA riwayat "${tabLabel}"? Tindakan ini tidak bisa dibatalkan.`);
   if (!ok) return;
   try {
-    const snap = await db.collection(HISTORY_COLLECTION).get();
     const batch = db.batch();
-    snap.docs.forEach(doc => batch.delete(doc.ref));
+    currentTabItems.forEach(item => batch.delete(db.collection(HISTORY_COLLECTION).doc(item.key)));
     await batch.commit();
   } catch (e) {
     console.error('Failed to clear history in Firestore:', e);
-    await customAlert('Gagal menghapus semua riwayat. Cek koneksi internet, lalu coba lagi.');
+    await customAlert('Gagal menghapus riwayat. Cek koneksi internet, lalu coba lagi.');
     return;
   }
   selectedKeys.clear();
   selectMode = false;
   loadHistoryList();
-  showToast('Semua riwayat dihapus ✓');
+  showToast('Riwayat "' + tabLabel + '" dihapus ✓');
 };
 
 async function loadHistoryList() {
   const listEl = document.getElementById('histList');
   const selectBtn = document.getElementById('selectModeBtn');
+  const tabOngoingBtn = document.getElementById('tabOngoing');
+  const tabFinishedBtn = document.getElementById('tabFinished');
+
+  tabOngoingBtn.className = historyTab === 'ongoing' ? 'active' : '';
+  tabFinishedBtn.className = historyTab === 'finished' ? 'active' : '';
 
   listEl.innerHTML = '<div class="empty-hist">Memuat...</div>';
 
@@ -938,12 +961,14 @@ async function loadHistoryList() {
     : 'Select';
   selectBtn.className = selectMode ? (selectedKeys.size > 0 ? 'danger' : 'active') : '';
 
-  if (localHistory.length === 0) {
-    listEl.innerHTML = '<div class="empty-hist">Belum ada riwayat tersimpan.</div>';
+  const filtered = localHistory.filter(item => (item.status || 'ongoing') === historyTab);
+
+  if (filtered.length === 0) {
+    listEl.innerHTML = '<div class="empty-hist">' + (historyTab === 'ongoing' ? 'Belum ada riwayat On Hold.' : 'Belum ada riwayat Selesai.') + '</div>';
     return;
   }
 
-  const items = [...localHistory].sort((a, b) => (b.savedAt || '').localeCompare(a.savedAt || ''));
+  const items = [...filtered].sort((a, b) => (b.savedAt || '').localeCompare(a.savedAt || ''));
 
   listEl.innerHTML = '';
   items.forEach(item => {
@@ -1030,8 +1055,36 @@ function buildSummaryText() {
   return lines.join('\n');
 }
 
-document.getElementById('finishBtn').onclick = () => {
+document.getElementById('finishBtn').onclick = async () => {
+  const dateStr = document.getElementById('dateInput').value.trim();
+  if (!dateStr) { await customAlert('Isi tanggal dulu sebelum Finish.'); return; }
+
+  const hasData = CATEGORIES.some(cat => catSum(cat.code) > 0);
+  if (!hasData) { await customAlert('Belum ada berat yang diisi.'); return; }
+
   const text = buildSummaryText();
+
+  const finishBtnEl = document.getElementById('finishBtn');
+  finishBtnEl.disabled = true;
+  const key = 'timbangan-' + Date.now();
+  const payload = { key, date: dateStr, customer: selectedCustomer, state: JSON.parse(JSON.stringify(state)), savedAt: new Date().toISOString(), status: 'finished' };
+  try {
+    await db.collection(HISTORY_COLLECTION).doc(key).set(payload);
+  } catch (e) {
+    console.error('Failed to save finished record to Firestore:', e);
+    finishBtnEl.disabled = false;
+    await customAlert('Gagal menyimpan riwayat Selesai ke server. Cek koneksi internet, lalu coba lagi.');
+    return;
+  }
+  finishBtnEl.disabled = false;
+
+  CATEGORIES.forEach(c => state[c.code] = ['']);
+  Object.keys(openState).forEach(k => openState[k] = false);
+  selectedCustomer = null;
+  document.getElementById('dateInput').value = '';
+  render();
+  renderCustomers();
+
   document.getElementById('summaryBox').textContent = text;
   document.getElementById('finishOverlay').classList.add('open');
 };
